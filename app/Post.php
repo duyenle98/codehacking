@@ -2,11 +2,24 @@
 
 namespace App;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+    use Sluggable;
+
     protected $guarded = [];
+
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'title',
+                'onUpdate' => true,
+            ]
+        ];
+    }
 
     public function user() {
         return $this->belongsTo('App\User');
@@ -18,5 +31,9 @@ class Post extends Model
 
     public function photo() {
         return $this->belongsTo('App\Photo');
+    }
+
+    public function comments() {
+        return $this->hasMany('App\Comment');
     }
 }
